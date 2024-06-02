@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
         try {
-            //Invoca al método de inicio de sesión en UserService
+            //Llama al método de inicio de sesión en UserService
             boolean loggedIn = userService.login(email, password);
             if (loggedIn) {
                 return ResponseEntity.ok("Inicio de sesión exitoso");
