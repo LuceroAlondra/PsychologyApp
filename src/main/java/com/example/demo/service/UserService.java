@@ -20,7 +20,8 @@ public class UserService {
 
     public User createUser(User user) {
         // Verificar si el correo electrónico ya está registrado
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        User existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser != null) {
             throw new IllegalArgumentException("El correo electrónico ya está registrado");
         }
 
@@ -28,13 +29,20 @@ public class UserService {
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
-        // Guardar el usuario en la base de datos
+        // Guardo el usuario en la base de datos
         return userRepository.save(user);
     }
 
-	public boolean login(String email, String password) {
-		
-		return false;
-	}
+    public boolean login(String email, String password) {
+        // Buscar el usuario por correo electrónico
+        User user = userRepository.findByEmail(email);
+        
+        // si el usuario existe y si la contraseña coincide
+        if (user != null && user.getPassword().equals(password)) {
+            return true; // Inicio de sesión exitoso
+        } else {
+            return false; // Credenciales incorrectas
+        }
+    }
 	
 }
